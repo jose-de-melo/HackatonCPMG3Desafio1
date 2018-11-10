@@ -8,10 +8,10 @@ class Tweety:
     url_tweet = "https://twitter.com/{}/status/{}"
 
     keys = {
-        "consumer_key":"09Zmx27gyLRh50GsPxa8S2LtQ",
-        "consumer_secret":"uO7M4aGHGCK9oqxygrcgbxByCXcCLJMSTK72RmKBN9iLOXP4D3",
-        "token_key":"1054111933014663168-VNtkKKAwLfNbpCpGZ5qsvczSMvRGZS",
-        "token_secret":"6bfhp4oKxJ3lyVpKXyxu0jd2WGM66rSUXuWTmpzSsQZsv"
+        "consumer_key":"AmWoEvBBBf8YaDrlGxJOJ9Y4K",
+        "consumer_secret":"fvdlst0DC18zSKr2NWNlUQv2nOlasBd1pwfr7PapW2X1fZmXqZ",
+        "token_key":"1060644241985146880-boYedoPZ9HoWREKxTZq3XK4TvbQyKv",
+        "token_secret":"X3EWgsjkl7ZGAknMWICg0JSTUoVuIEERajDi2tAkj1kQH"
     }
 
     api = TwitterAPI(keys['consumer_key'],keys['consumer_secret'],
@@ -25,8 +25,7 @@ class Tweety:
         return self.api.request(self.endp['search'], {'q':term, 'lang':'pt', 'count':10})
 
     def comment_tweet(self, screen_name, conteudo, id_tweet_conteudo):
-        print(id_tweet_conteudo)
-        return self.api.request(self.endp['post'], {'status': '@{}  '.format(screen_name) + conteudo, 'in_reply_to_status_id': id_tweet_conteudo})
+        return self.api.request(self.endp['post'], {'status': '@{}  {}'.format(screen_name, conteudo), 'in_reply_to_status_id': id_tweet_conteudo})
 
     def retweet(self, screen_name, id_tweet , conteudo):
         return self.api.request(self.endp['post'], {'status': conteudo + '\n\n\n' + self.url_tweet.format(screen_name, id_tweet)})
@@ -42,6 +41,10 @@ class Tweety:
         jso = []
         for tw in tw_response:
             if(not tw['truncated']):
+
+                if tw['user']['screen_name'] == 'bndes':
+                    continue
+
                 twt = {}
                 twt['id_tweet'] = tw['id']
                 twt['username'] = tw['user']['name']

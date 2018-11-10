@@ -16,16 +16,16 @@ app = Flask(__name__)
 def index():
     return render_template("index.html", status=201)
 '''
-def responder_tweet(id, screen_name):
+def responder_tweet(id, screen_name, mensagem):
     tweety = tm.Tweety()
-    tweety.comment_tweet(screen_name, 'CDV ? Tá maluco ? Eu em', id)
+    print("CHEGOU")
+    tweety.comment_tweet(screen_name, mensagem, id)
 
 
 '''Busca por tweets que possuam determinado termo usando módulo'''
 def search_tweets(termo):
     tweety = tm.Tweety()
     result = tweety.search_term(termo)
-   # tweety.retweet('https://twitter.com/joseslv13/status/1058793300931547136', "Teste retweet")
     return tweety.filter(result)
 
 '''End-point para recuperar informações sobre o heroi'''
@@ -38,12 +38,13 @@ def search(termo):
     for tt in twetts['twetts'] :
         resp = requests.put('http://127.0.0.1:5000/tweet', data={'tt': tt['conteudo']})
 
+        print(tt['username'])
         respJson = json.loads(resp.text)
 
+        print(respJson)
         if respJson['fake'] == True:
-            print(tt['conteudo'])
-            #responder_tweet()
-            print(respJson['mensagem'] + '\n\n')
+            
+            responder_tweet(tt['id_tweet'], tt['nickname'], respJson['mensagem'])
             fake_count += 1
         else:
             print("THIS IS A REAL NEWS!")
