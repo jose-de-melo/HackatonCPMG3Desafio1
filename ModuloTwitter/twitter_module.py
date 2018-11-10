@@ -22,7 +22,7 @@ class Tweety:
 
     '''Realiza uma busca pelo termo e retorna um TwitterResponse'''
     def search_term(self,term):
-        return self.api.request(self.endp['search'], {'q':term, 'lang':'pt', 'count':100})
+        return self.api.request(self.endp['search'], {'q':term, 'lang':'pt', 'count':10})
 
     def comment_tweet(self, screen_name, conteudo, id_tweet_conteudo):
         print(id_tweet_conteudo)

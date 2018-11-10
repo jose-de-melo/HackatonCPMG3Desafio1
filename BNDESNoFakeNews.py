@@ -5,6 +5,9 @@ from ModuloTwitter import twitter_module as tm
 import requests
 from flask import Flask, render_template, request
 
+
+fake_count = 0
+
 app = Flask(__name__)
 
 '''
@@ -28,12 +31,25 @@ def search_tweets(termo):
 '''End-point para recuperar informações sobre o heroi'''
 @app.route('/tweets/<termo>', methods=['GET'])
 def search(termo):
+    global fake_count
     twetts = search_tweets("'"+termo+"'")
 
-###    for tt in twetts['twetts'] :
-###        #print(tt['conteudo'])
-###        resp = requests.put('http://100.64.15.168:5000/tweet', data={'tt': tt['conteudo']})
-###        print(resp.text)
+    
+    for tt in twetts['twetts'] :
+        resp = requests.put('http://127.0.0.1:5000/tweet', data={'tt': tt['conteudo']})
+
+        respJson = json.loads(resp.text)
+
+        if respJson['fake'] == True:
+            print(tt['conteudo'])
+            #responder_tweet()
+            print(respJson['mensagem'] + '\n\n')
+            fake_count += 1
+        else:
+            print("THIS IS A REAL NEWS!")
+            continue
+
+
 
     #twetts['tweets'] = "Acabou!"
 
